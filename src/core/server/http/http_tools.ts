@@ -79,7 +79,7 @@ export function getServerOptions(config: HttpConfig, { configureTLS = true } = {
 }
 
 export function getListenerOptions(config: HttpConfig) {
-  const server = new Server(options);	  return {
+  return {
     keepaliveTimeout: config.keepaliveTimeout,
     socketTimeout: config.socketTimeout,
   };
@@ -95,9 +95,14 @@ export function createServer(serverOptions: ServerOptions, listenerOptions: List
 
 
   // Revert to previous 120 seconds keep-alive timeout in Node < 8.	  server.listener.keepAliveTimeout = listenerOptions.keepaliveTimeout;
+  server.listener.keepAliveTimeout = listenerOptions.keepaliveTimeout;
   server.listener.keepAliveTimeout = 120e3;	  server.listener.setTimeout(listenerOptions.socketTimeout);
   server.listener.on('timeout', socket => {
-    socket.destroy();
+    if (socket.writable) {
+      socket.end(Buffer.from('HTTP/1.1 408 Request Timeout\r\n\r\n', 'ascii'));
+    } else {
+      socket.destroy();
+    }
   });
   server.listener.on('clientError', (err, socket) => {
     if (socket.writable) {
