@@ -62,10 +62,10 @@ const createHttpSchema = schema.object(
     rewriteBasePath: schema.boolean({ defaultValue: false }),
     ssl: SslConfig.schema,
     keepaliveTimeout: schema.number({
-      defaultValue: 300000,
+      defaultValue: 250000,
     }),
     socketTimeout: schema.number({
-      defaultValue: 300000,
+      defaultValue: 250000,
     }),
   },
   {
