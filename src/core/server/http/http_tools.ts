@@ -93,10 +93,8 @@ interface ListenerOptions {
 export function createServer(serverOptions: ServerOptions, listenerOptions: ListenerOptions) {
   const server = new Server(serverOptions);
 
-
-  // Revert to previous 120 seconds keep-alive timeout in Node < 8.	  server.listener.keepAliveTimeout = listenerOptions.keepaliveTimeout;
   server.listener.keepAliveTimeout = listenerOptions.keepaliveTimeout;
-  server.listener.keepAliveTimeout = 120e3;	  server.listener.setTimeout(listenerOptions.socketTimeout);
+  server.listener.setTimeout(listenerOptions.socketTimeout);
   server.listener.on('timeout', socket => {
     if (socket.writable) {
       socket.end(Buffer.from('HTTP/1.1 408 Request Timeout\r\n\r\n', 'ascii'));
