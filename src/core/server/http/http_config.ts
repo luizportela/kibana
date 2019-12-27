@@ -119,8 +119,8 @@ export class HttpConfig {
     this.cors = config.cors;
     this.maxPayload = config.maxPayload;
     this.basePath = config.basePath;
-    this.keepaliveTimeout = rawConfig.keepaliveTimeout;
-    this.socketTimeout = rawConfig.socketTimeout;
+    this.keepaliveTimeout = config.keepaliveTimeout;
+    this.socketTimeout = config.socketTimeout;
     this.rewriteBasePath = config.rewriteBasePath;
     this.publicDir = env.staticFilesDir;
     this.ssl = new SslConfig(config.ssl);
