@@ -43,13 +43,12 @@ export class HttpsRedirectServer {
     // within the platform with the only exception that it should always be a
     // plain HTTP server, so we just ignore `tls` part of options.
     this.server = createServer(
-      ...getServerOptions(config, { configureTLS: false }),	      {
-      port: config.ssl.redirectHttpFromPort,	        ...getServerOptions(config, { configureTLS: false }),
-    });	        port: config.ssl.redirectHttpFromPort,
+      {
+        ...getServerOptions(config, { configureTLS: false }),
+        port: config.ssl.redirectHttpFromPort,
       },
       getListenerOptions(config)
     );
-
     this.server.ext('onRequest', (request: Request, responseToolkit: ResponseToolkit) => {
       return responseToolkit
         .redirect(
